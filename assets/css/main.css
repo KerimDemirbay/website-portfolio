@@ -32,7 +32,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 
-video, img {
+.project_video, .project_image {
 	display: block;
 	width: 100%;
 	max-width: 800px;

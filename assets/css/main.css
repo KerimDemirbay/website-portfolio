@@ -29,6 +29,14 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;}
 
+
+video, img {
+	width: 100% !important;
+	max-width: 800px !important;
+	height: auto !important;
+}
+
+
 body {
 	line-height: 1;
 }

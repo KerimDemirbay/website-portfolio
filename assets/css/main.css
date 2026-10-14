@@ -36,7 +36,8 @@ video, img {
 	max-width: 800px;
 	margin: 0 auto; /* centres it on desktop */
 	aspect-ratio: 16 / 9; /* same box for everything */
-	object-fit: cover; /* crops to fill; use "contain" to letterbox instead */
+	object-fit: contain;
+	background: #000;
 }
 
 

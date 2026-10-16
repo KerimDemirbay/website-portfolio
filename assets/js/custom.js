@@ -1,15 +1,5 @@
-function getContainer(el) {
-    // Arrows live inside the slideshow; dots live in a sibling div after it
-    const inside = el.closest(".slideshow-container");
-    if (inside) return inside;
-    let node = el.parentElement.previousElementSibling;
-    while (node && !node.classList.contains("slideshow-container")) {
-        node = node.previousElementSibling;
-    }
-    return node;
-}
-
 function getDots(container) {
+    // The dots live in a div that comes after the slideshow container
     let node = container.nextElementSibling;
     while (node && !node.querySelector(".dot")) {
         node = node.nextElementSibling;
@@ -17,32 +7,29 @@ function getDots(container) {
     return node ? node.querySelectorAll(".dot") : [];
 }
 
-function showSlides(container, n) {
-    const slides = container.getElementsByClassName("mySlides");
+document.querySelectorAll(".slideshow-container").forEach(container => {
+    const slides = container.querySelectorAll(".mySlides");
     const dots = getDots(container);
-    let index = n;
-    if (index > slides.length) index = 1;
-    if (index < 1) index = slides.length;
+    let index = 1;
 
-    for (const slide of slides) slide.style.display = "none";
-    for (const dot of dots) dot.classList.remove("active");
+    function show(n) {
+        if (n > slides.length) n = 1;
+        if (n < 1) n = slides.length;
+        index = n;
+        slides.forEach((slide, i) => {
+            slide.style.display = i === index - 1 ? "block" : "none";
+        });
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === index - 1);
+        });
+    }
 
-    slides[index - 1].style.display = "block";
-    if (dots[index - 1]) dots[index - 1].classList.add("active");
-    container.dataset.index = index;
-}
+    container.querySelector(".prev").addEventListener("click", () => show(index - 1));
+    container.querySelector(".next").addEventListener("click", () => show(index + 1));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => show(i + 1)));
 
-function plusSlides(el, n) {
-    const container = getContainer(el);
-    showSlides(container, Number(container.dataset.index || 1) + n);
-}
-
-function currentSlide(el, n) {
-    showSlides(getContainer(el), n);
-}
-
-// Initialise every slideshow on the page
-document.querySelectorAll(".slideshow-container").forEach(c => showSlides(c, 1));
+    show(1);
+});
 
 function playPause(videoId) {
     const video = document.getElementById(videoId);
